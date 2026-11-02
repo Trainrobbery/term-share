@@ -1,0 +1,8 @@
+<div class="ts-import-body">
+  <p class="ts-notice">{{labels.ImportHelp}}</p>
+  <div class="ts-field"><label for="ts-import-file">{{labels.ChooseFile}}</label><input id="ts-import-file" name="file" type="file" accept=".json,application/json"></div>
+  <div class="ts-field"><label for="ts-import-mode">{{labels.ImportMode}}</label><select id="ts-import-mode" name="mode"><option value="merge">{{labels.Merge}}</option><option value="replace">{{labels.Replace}}</option></select><p class="hint">{{labels.MergeHint}}</p></div>
+  <label class="ts-checkbox"><input name="backup" type="checkbox" checked> {{labels.BackupBeforeImport}}</label>
+  <section class="ts-import-preview" aria-live="polite"><h3>{{labels.ImportPreview}}</h3><p class="ts-import-summary">{{labels.NoFile}}</p><ul class="ts-import-changes"></ul></section>
+  <footer class="ts-form-footer"><button type="button" data-ts-action="cancel">{{labels.Cancel}}</button><button type="button" data-ts-action="apply" class="ts-primary" disabled>{{labels.ApplyImport}}</button></footer>
+</div>

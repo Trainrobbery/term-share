@@ -1,0 +1,26 @@
+<div class="ts-shell">
+  <div class="ts-notice"><i class="fa-solid fa-earth-asia" aria-hidden="true"></i> {{labels.PublicNotice}}</div>
+  <div class="ts-toolbar">
+    <label class="ts-search"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input type="search" data-field="search" value="{{search}}" placeholder="{{labels.SearchTerms}}" aria-label="{{labels.SearchTerms}}"></label>
+    <button type="button" data-ts-action="new"><i class="fa-solid fa-plus" aria-hidden="true"></i> {{labels.NewTerm}}</button>
+    <button type="button" data-ts-action="import"><i class="fa-solid fa-file-import" aria-hidden="true"></i> {{labels.Import}}</button>
+    <button type="button" data-ts-action="export"><i class="fa-solid fa-file-export" aria-hidden="true"></i> {{labels.Export}}</button>
+  </div>
+  <div class="ts-split">
+    <section class="ts-list-panel">
+      <p class="ts-count">{{count}}</p>
+      <ul class="ts-term-list" aria-label="{{labels.SearchTerms}}">
+        {{#each entries}}<li data-term-row="{{id}}" {{#if hidden}}hidden{{/if}}><button type="button" data-ts-action="select" data-id="{{id}}" class="ts-term-row {{#if selected}}is-selected{{/if}}" aria-pressed="{{selected}}"><strong>{{name}}</strong><small>{{aliasText}}</small></button></li>
+        {{else}}<li class="ts-empty">{{labels.EmptyDictionary}}</li>{{/each}}
+      </ul>
+    </section>
+    <section class="ts-detail-panel">
+      {{#if selected}}
+        <div class="ts-detail-heading"><h2>{{selected.name}}</h2><div class="ts-detail-actions"><button type="button" data-ts-action="edit">{{labels.Edit}}</button><button type="button" class="ts-danger" data-ts-action="delete">{{labels.Delete}}</button></div></div>
+        <p class="ts-aliases"><strong>{{labels.Aliases}}:</strong> {{#if selected.aliasText}}{{selected.aliasText}}{{else}}{{labels.NoAliases}}{{/if}}</p>
+        <h3>{{labels.PreviewDescription}}</h3><div class="ts-text-preview">{{selected.preview}}</div>
+      {{else}}<div class="ts-empty ts-empty-detail"><i class="fa-solid fa-book-open" aria-hidden="true"></i><p>{{labels.NoSelection}}</p><small>{{labels.ManagerHint}}</small></div>{{/if}}
+    </section>
+  </div>
+  <footer class="ts-window-footer"><kbd>/?</kbd> <kbd>/term</kbd> · {{labels.ManagerHint}}</footer>
+</div>

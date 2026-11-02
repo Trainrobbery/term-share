@@ -1,0 +1,94 @@
+/* Foundry V13/V14 load module styles into the modules cascade layer. */
+.term-share-app {
+  --ts-accent: #537570;
+  --ts-border: var(--color-border-light-2, #99958c);
+  --ts-muted: var(--color-text-secondary, #65635e);
+  --ts-surface: var(--color-cool-5-25, rgba(100, 110, 115, .08));
+  --ts-input-bg: #faf8f2;
+  --ts-input-fg: #252925;
+  min-width: 440px;
+}
+.term-share-app .window-content {padding: 0; overflow: auto;}
+.term-share-app [hidden], .term-share-autocomplete[hidden] {display: none !important;}
+.term-share-app button {width: auto; flex: 0 0 auto;}
+.term-share-app button:disabled {opacity: .45; cursor: default;}
+.term-share-app input, .term-share-app textarea, .term-share-app select {width: 100%;}
+.term-share-app .ts-notice {padding: 10px 14px; background: var(--ts-surface); border-bottom: 1px solid var(--ts-border); line-height: 1.5; font-size: 12px;}
+.term-share-app .ts-shell {height: 100%; min-height: 400px; display: flex; flex-direction: column;}
+.term-share-app .ts-toolbar {display: flex; flex-wrap: wrap; align-items: center; gap: 7px; padding: 14px; border-bottom: 1px solid var(--ts-border);}
+.term-share-app .ts-search {display: flex; align-items: center; gap: 8px; flex: 1 1 220px;}
+.term-share-app .ts-search input {min-width: 90px;}
+.term-share-app .ts-split {display: grid; grid-template-columns: minmax(200px, 35%) minmax(220px, 1fr); flex: 1; min-height: 0;}
+.term-share-app .ts-list-panel {border-right: 1px solid var(--ts-border); overflow: auto;}
+.term-share-app .ts-count {margin: 12px 14px; font-size: 12px; color: var(--ts-muted);}
+.term-share-app .ts-term-list {list-style: none; padding: 0; margin: 0;}
+.term-share-app .ts-term-row {width: 100%; padding: 12px 14px; border: 0; border-radius: 0; border-bottom: 1px solid var(--ts-border); background: transparent; display: block; text-align: left; line-height: 1.4; height: auto; white-space: normal;}
+.term-share-app .ts-term-row strong, .term-share-app .ts-term-row small {display: block; overflow-wrap: anywhere;}
+.term-share-app .ts-term-row small {font-size: 11px; color: var(--ts-muted); margin-top: 4px;}
+.term-share-app .ts-term-row.is-selected {background: var(--ts-surface); box-shadow: inset 4px 0 var(--ts-accent);}
+.term-share-app .ts-detail-panel {overflow: auto; padding: 20px;}
+.term-share-app .ts-detail-heading {display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: 12px;}
+.term-share-app .ts-detail-heading h2 {margin: 0; border: 0; overflow-wrap: anywhere;}
+.term-share-app .ts-detail-actions {display: flex; gap: 6px;}
+.term-share-app .ts-danger {color: var(--color-level-error, #9c3333);}
+.term-share-app .ts-aliases {font-size: 12px; line-height: 1.6; color: var(--ts-muted); overflow-wrap: anywhere;}
+.term-share-app .ts-detail-panel h3 {margin-top: 24px; font-size: 13px;}
+.term-share-app .ts-text-preview {line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere;}
+.term-share-app .ts-empty {padding: 20px; color: var(--ts-muted); line-height: 1.6;}
+.term-share-app .ts-empty-detail {text-align: center; padding-top: 60px;}
+.term-share-app .ts-empty-detail > i {font-size: 34px; opacity: .5;}
+.term-share-app .ts-window-footer {padding: 10px 14px; border-top: 1px solid var(--ts-border); font-size: 11px; color: var(--ts-muted);}
+.term-share-app .ts-entry-form, .term-share-app .ts-import-body {display: flex; flex-direction: column; gap: 14px; padding: 16px; min-height: 100%;}
+.term-share-app .ts-field {display: flex; flex-direction: column; gap: 6px;}
+.term-share-app .ts-field > label {font-weight: bold;}
+.term-share-app .ts-field .hint {margin: 0; font-size: 11px; line-height: 1.5; color: var(--ts-muted);}
+.term-share-app .ts-rich-field {flex: 1; min-height: 260px;}
+.term-share-app .ts-editor-mount {min-height: 330px; border: 1px solid var(--ts-border); border-radius: 5px; overflow: hidden;}
+.term-share-app .ts-rich-input {display: block; color: var(--ts-input-fg); background: var(--ts-input-bg);}
+.term-share-app .ts-rich-toolbar {display: flex; flex-wrap: wrap; align-items: center; gap: 3px; padding: 6px; border-bottom: 1px solid var(--ts-border);}
+.term-share-app .ts-rich-toolbar button {width: 29px; height: 28px; min-height: 28px; padding: 0; color: var(--ts-input-fg); background: var(--ts-input-bg);}
+.term-share-app .ts-rich-toolbar input[type="color"] {flex: 0 0 30px; width: 30px; height: 27px; padding: 2px; margin: 0;}
+.term-share-app .ts-editor-surface {display: block; box-sizing: border-box; height: 300px; min-height: 280px; overflow-y: auto; padding: 12px; color: var(--ts-input-fg); background-color: var(--ts-input-bg); caret-color: var(--ts-input-fg); font: inherit; line-height: 1.7; white-space: pre-wrap; overflow-wrap: anywhere; outline: none;}
+.term-share-app .ts-editor-surface:focus {box-shadow: inset 0 0 0 2px var(--ts-accent);}
+.term-share-app .ts-editor-surface > :first-child {margin-top: 0;}
+.term-share-app .ts-editor-surface img {max-width: 100%; height: auto;}
+.term-share-app.ts-editor .ts-field > input, .term-share-app.ts-editor .ts-field > textarea {color: var(--ts-input-fg); background-color: var(--ts-input-bg); caret-color: var(--ts-input-fg);}
+body.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark {--ts-input-bg: #24282d; --ts-input-fg: #ecebe6;}
+.term-share-app .ts-form-footer {display: flex; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ts-border);}
+.term-share-app .ts-primary {border-color: var(--ts-accent);}
+.term-share-app .ts-warning {padding: 10px; border: 1px solid #b98833; border-radius: 4px; line-height: 1.5; font-size: 12px;}
+.term-share-app .ts-checkbox {display: flex; align-items: center; gap: 8px;}
+.term-share-app .ts-checkbox input {width: auto;}
+.term-share-app .ts-import-preview {flex: 1; min-height: 120px; padding: 12px; border: 1px solid var(--ts-border); border-radius: 5px;}
+.term-share-app .ts-import-summary {line-height: 1.6;}
+.term-share-app .ts-import-changes {max-height: 200px; overflow: auto; padding-left: 20px; line-height: 1.6; overflow-wrap: anywhere;}
+
+.term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 4px 0; gap: 0; min-height: 0;}
+.term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0;}
+.term-share-message .ts-card-chrome {display: none !important;}
+.term-share-message:not(.term-share-card)::before, .term-share-message:not(.term-share-card)::after {display: none;}
+.term-share-content {display: block; padding: 0; margin: 0;}
+.term-share-card .ts-share-notice {font-size: 11px; font-weight: normal; line-height: 1.4; margin: 0; padding: 7px 12px 0; color: inherit; opacity: .75; overflow-wrap: anywhere;}
+.term-share-card {border: 1px solid var(--color-border-light-2, #918b80); border-left: 4px solid #65857b; border-radius: 6px; overflow: hidden; margin: 0; color: #252925; background: #f4f1e8;}
+.theme-dark .term-share-card, .term-share-card.theme-dark {color: #ecebe6; background: #24282d;}
+.term-share-message.theme-light .term-share-card, .term-share-card.theme-light {color: #252925; background: #f4f1e8;}
+.term-share-card .ts-card-title {font-size: 18px; line-height: 1.3; padding: 9px 12px; margin: 0; border: 0; color: inherit; overflow-wrap: anywhere;}
+.term-share-card .ts-share-notice + .ts-card-title {padding-top: 3px;}
+.term-share-card .ts-card-body {padding: 8px 12px; border-top: 1px solid var(--color-border-light-2, #918b80); line-height: 1.65; overflow-wrap: anywhere; overflow-x: auto;}
+.term-share-card .ts-card-body > :first-child {margin-top: 0;}
+.term-share-card .ts-card-body > :last-child {margin-bottom: 0;}
+.term-share-card .ts-card-body img {max-width: 100%; height: auto; object-fit: contain;}
+.term-share-card .ts-card-body pre {white-space: pre-wrap;}
+.term-share-card .ts-card-body table {max-width: 100%;}
+
+.term-share-autocomplete {position: fixed; z-index: 10000; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; background: var(--background, #f4f1e8); color: var(--color-text-primary, #242923); border: 1px solid var(--color-border-light-2, #918b80); border-radius: 6px; box-shadow: 0 4px 18px #0004; padding: 3px;}
+.term-share-autocomplete .ts-suggestion {position: relative; padding: 8px 10px; min-height: 48px; box-sizing: border-box; cursor: pointer; border-radius: 3px; line-height: 1.4; overflow-wrap: anywhere;}
+.term-share-autocomplete .ts-suggestion[aria-selected="true"] {padding-right: 48px; background: rgba(100, 145, 125, .22); outline: 1px solid #65857b; outline-offset: -1px;}
+.term-share-autocomplete .ts-suggestion[aria-selected="true"]::after {content: "TAP"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: normal; line-height: 1; letter-spacing: .04em; opacity: .35; pointer-events: none;}
+.term-share-autocomplete .ts-suggestion small {display: block; font-size: 11px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px;}
+.term-share-autocomplete .ts-matched-alias {font-size: 11px; opacity: .75;}
+body.theme-dark .term-share-autocomplete, .theme-dark .term-share-autocomplete {background: #24282d; color: #ecebe6;}
+@media (max-width: 620px) {
+  .term-share-app .ts-split {grid-template-columns: minmax(150px, 40%) minmax(180px, 1fr);}
+  .term-share-app .ts-detail-panel {padding: 12px;}
+}

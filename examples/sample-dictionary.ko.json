@@ -1,0 +1,24 @@
+{
+  "module": "term-share",
+  "formatVersion": 1,
+  "entries": [
+    {
+      "id": "sampleBleeding001",
+      "name": "출혈",
+      "aliases": ["Bleeding", "출혈 상태"],
+      "description": "<p><strong>체험용 예시 설명입니다.</strong></p><p>출혈 상태에 걸린 대상은 턴이 시작될 때 지속 피해를 받습니다.</p><ul><li>실제 피해량과 해제 조건은 사용하는 시스템의 규칙으로 수정하세요.</li></ul>"
+    },
+    {
+      "id": "sampleFocus00001",
+      "name": "집중",
+      "aliases": ["Concentration", "집중 상태"],
+      "description": "<p><strong>체험용 예시 설명입니다.</strong></p><p>특정 효과를 유지하기 위해 집중하고 있는 상태입니다. 실제 유지·종료 조건은 사용하는 시스템의 규칙을 따릅니다.</p>"
+    },
+    {
+      "id": "sampleStunned001",
+      "name": "기절",
+      "aliases": ["Stunned"],
+      "description": "<p><strong>체험용 예시 설명입니다.</strong></p><p><span style=\"color:#9b4c3f\">행동이 제한되는 상태</span>를 나타내는 예시입니다. 실제 효과는 사용하는 시스템에 맞게 작성하세요.</p>"
+    }
+  ]
+}

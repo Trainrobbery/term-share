@@ -1,0 +1,8 @@
+<form class="ts-entry-form" autocomplete="off">
+  <div class="ts-notice">{{labels.PublicNotice}}</div>
+  <div class="ts-stale-notice ts-warning" hidden>{{labels.StaleNotice}}</div>
+  <div class="ts-field"><label for="ts-entry-name">{{labels.TermName}}</label><input id="ts-entry-name" type="text" name="name" value="{{name}}" maxlength="{{maxName}}" required autofocus></div>
+  <div class="ts-field"><label for="ts-entry-aliases">{{labels.Aliases}}</label><textarea id="ts-entry-aliases" name="aliases" rows="2">{{aliasText}}</textarea><p class="hint">{{labels.AliasHint}}</p></div>
+  <div class="ts-field ts-rich-field"><label>{{labels.Description}}</label><div class="ts-editor-mount">{{labels.EditorLoading}}</div><p class="hint">{{labels.RichTextHint}}</p></div>
+  <footer class="ts-form-footer"><button type="button" data-ts-action="cancel">{{labels.Cancel}}</button><button type="submit" data-ts-action="save" class="ts-primary" disabled><i class="fa-solid fa-check" aria-hidden="true"></i> {{labels.Save}}</button></footer>
+</form>
