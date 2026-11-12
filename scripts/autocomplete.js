@@ -10,6 +10,7 @@ export class AutocompleteController {
   composing = new WeakSet();
   compositionEnded = new WeakMap();
   pending = new WeakSet();
+  queuedSubmissions = new Map();
   dismissed = null;
   frame = null;
   previews = new Map();
@@ -56,8 +57,10 @@ export class AutocompleteController {
         return {
           update: updatedView => {
             if (this.input === updatedView.dom) this.update();
+            this.settleQueuedSubmit(updatedView.dom);
           },
           destroy: () => {
+            this.cancelQueuedSubmit(view.dom);
             this.views.delete(view.dom);
             if (this.input === view.dom) this.close();
           }
@@ -82,7 +85,10 @@ export class AutocompleteController {
       else if (!this.popup.contains(event.target)) this.close();
     }, {signal});
     doc.addEventListener("focusout", event => {
-      if (event.target === this.input && !this.popup.contains(event.relatedTarget)) this.close();
+      if (event.target === this.input && !this.popup.contains(event.relatedTarget)) {
+        this.cancelQueuedSubmit(this.input);
+        this.close();
+      }
     }, {signal});
     doc.addEventListener("input", event => {
       const input = this.getInput(event.target);
@@ -91,10 +97,22 @@ export class AutocompleteController {
       this.dismissed = null;
       this.index = 0;
       this.update();
+      this.settleQueuedSubmit(input);
     }, {signal});
+    doc.addEventListener("beforeinput", event => {
+      const input = this.getInput(event.target);
+      if (!input || !this.queuedSubmissions.has(input)) return;
+      if (["insertLineBreak", "insertParagraph"].includes(event.inputType)) {
+        // Cancel only the newline caused by the pending Enter, never IME text.
+        event.preventDefault();
+        event.stopImmediatePropagation();
+      } else if (/^(?:delete|history)|^insertFrom(?:Paste|Drop)/.test(event.inputType ?? "")) {
+        this.cancelQueuedSubmit(input);
+      }
+    }, {signal, capture: true});
     doc.addEventListener("compositionstart", event => {
       const input = this.getInput(event.target);
-      if (input) { this.composing.add(input); this.close(); }
+      if (input) { this.cancelQueuedSubmit(input); this.composing.add(input); this.close(); }
     }, {signal, capture: true});
     doc.addEventListener("compositionend", event => {
       const input = this.getInput(event.target);
@@ -103,6 +121,7 @@ export class AutocompleteController {
       this.compositionEnded.set(input, performance.now());
       this.input = input;
       this.update();
+      this.settleQueuedSubmit(input);
     }, {signal, capture: true});
     doc.addEventListener("keydown", event => this.keydown(event), {signal, capture: true});
     doc.addEventListener("pointerdown", event => {
@@ -119,6 +138,7 @@ export class AutocompleteController {
     // Remove a popup immediately when Foundry replaces or hides the input subtree.
     this.observer = new MutationObserver(records => {
       if (records.every(record => record.target === this.popup || this.popup.contains(record.target))) return;
+      for (const input of this.queuedSubmissions.keys()) if (!input.isConnected) this.cancelQueuedSubmit(input);
       if (!this.popup.hidden && this.frame == null) this.frame = requestAnimationFrame(() => {
         this.frame = null;
         if (!this.input?.isConnected || !this.input.getClientRects().length) this.close();
@@ -130,19 +150,26 @@ export class AutocompleteController {
   keydown(event) {
     const input = this.getInput(event.target);
     if (!input) return;
-    const command = this.chat.parse(this.read(input));
-    if (!command) return;
-    this.input = input;
     const enter = event.key === "Enter" || event.code === "Enter";
-    if (this.composing.has(input) || event.isComposing || event.keyCode === 229 || (enter && performance.now() - (this.compositionEnded.get(input) ?? -Infinity) < 80)) {
-      // Let the IME default action commit text, but stop the chat's Enter handler.
-      if (enter || event.keyCode === 229) event.stopImmediatePropagation();
+    const plainEnter = enter && !event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey;
+    if (!plainEnter) this.cancelQueuedSubmit(input);
+    const command = this.chat.parse(this.read(input));
+    if (!command) { this.cancelQueuedSubmit(input); return; }
+    this.input = input;
+    const ime = this.composing.has(input) || event.isComposing || event.keyCode === 229;
+    if (plainEnter) {
+      // An active IME needs the default key action to commit its final character.
+      // The separate beforeinput guard blocks only an accidental newline.
+      if (!ime) event.preventDefault();
+      event.stopImmediatePropagation();
+      if (!event.repeat) {
+        if (ime || this.queuedSubmissions.has(input) || performance.now() - (this.compositionEnded.get(input) ?? -Infinity) < 80) this.queueSubmit(input);
+        else void this.submit(input, command.query);
+      }
       return;
     }
-    if (enter && !event.shiftKey && !event.altKey && !event.ctrlKey && !event.metaKey) {
-      event.preventDefault();
-      event.stopImmediatePropagation();
-      if (!event.repeat) void this.submit(input, command.query);
+    if (ime) {
+      if (enter || event.keyCode === 229) event.stopImmediatePropagation();
       return;
     }
     if (this.popup.hidden || !this.rows.length) return;
@@ -156,6 +183,30 @@ export class AutocompleteController {
         this.markSelected();
       }
     }
+  }
+  queueSubmit(input) {
+    if (!this.queuedSubmissions.has(input)) this.queuedSubmissions.set(input, {timer: null});
+    this.settleQueuedSubmit(input);
+  }
+  settleQueuedSubmit(input) {
+    const queued = this.queuedSubmissions.get(input);
+    if (!queued) return;
+    clearTimeout(queued.timer);
+    queued.timer = null;
+    if (this.composing.has(input)) return;
+    // Read the committed textarea/ProseMirror state after final input and view
+    // updates settle, instead of dropping Enter during an arbitrary guard window.
+    queued.timer = setTimeout(() => {
+      if (this.queuedSubmissions.get(input) !== queued) return;
+      this.queuedSubmissions.delete(input);
+      if (!input.isConnected || document.activeElement !== input || this.composing.has(input)) return;
+      const command = this.chat.parse(this.read(input));
+      if (command) void this.submit(input, command.query);
+    }, 30);
+  }
+  cancelQueuedSubmit(input) {
+    clearTimeout(this.queuedSubmissions.get(input)?.timer);
+    this.queuedSubmissions.delete(input);
   }
   async submit(input, query) {
     if (this.pending.has(input)) return;
@@ -221,6 +272,7 @@ export class AutocompleteController {
     }
   }
   complete() {
+    this.cancelQueuedSubmit(this.input);
     const row = this.rows[this.index];
     const command = this.input && this.chat.parse(this.read(this.input));
     if (!row || !command) return;
@@ -249,6 +301,7 @@ export class AutocompleteController {
     }
   }
   destroy() {
+    for (const input of this.queuedSubmissions.keys()) this.cancelQueuedSubmit(input);
     this.close();
     this.abort?.abort();
     this.unsubscribe?.();

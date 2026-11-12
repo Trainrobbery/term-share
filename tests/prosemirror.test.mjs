@@ -77,3 +77,23 @@ test("journal ProseMirror views are never treated as chat inputs", () => {
   try { assert.equal(controller.getInput(view.dom), null); }
   finally { view.destroy(); host.remove(); }
 });
+
+test("ProseMirror shares the final committed Korean state after a single composition Enter", async () => {
+  const {controller, view, cleanup} = fixture(blockSchema);
+  try {
+    view.dispatch(view.state.tr.insertText("/? 출혀"));
+    view.dom.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
+    const enter = key(view.dom, "Enter", {isComposing: true, keyCode: 229});
+    assert.equal(enter.defaultPrevented, false);
+    view.dom.dispatchEvent(new CompositionEvent("compositionend", {bubbles: true}));
+    const newline = new window.InputEvent("beforeinput", {inputType: "insertParagraph", bubbles: true, cancelable: true});
+    view.dom.dispatchEvent(newline);
+    assert.equal(newline.defaultPrevented, true);
+    view.dispatch(view.state.tr.insertText("/? 출혈", 0, view.state.doc.content.size));
+    await new Promise(resolve => setTimeout(resolve, 90));
+    assert.equal(messages.length, 1);
+    assert.equal(messages[0].flags[MODULE_ID].entryId, "a");
+    assert.equal(controller.read(view.dom), "");
+    assert.equal(view.state.doc.textContent, "");
+  } finally { cleanup(); }
+});

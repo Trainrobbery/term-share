@@ -34,7 +34,7 @@ test("the install manifest and version metadata cover V13 and retain V14", async
   const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url)));
   const lock = JSON.parse(await readFile(new URL("../package-lock.json", import.meta.url)));
   assert.deepEqual(manifest.compatibility, {minimum: "13", maximum: "14"});
-  assert.equal(manifest.version, "0.1.0-alpha.9");
+  assert.equal(manifest.version, "0.1.0-alpha.10");
   assert.equal(pkg.version, manifest.version); assert.equal(lock.version, manifest.version);
   assert.deepEqual(manifest.styles, ["styles/term-share.css"]);
 });

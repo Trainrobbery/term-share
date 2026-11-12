@@ -1,6 +1,6 @@
 /** Pure dictionary rules, shared by Foundry and the test runner. */
 export const MODULE_ID = "term-share";
-export const VERSION = "0.1.0-alpha.9";
+export const VERSION = "0.1.0-alpha.10";
 export const FORMAT_VERSION = 1;
 export const LIMITS = Object.freeze({entries: 1000, aliases: 30, name: 120, description: 100000, bytes: 5 * 1024 * 1024});
 

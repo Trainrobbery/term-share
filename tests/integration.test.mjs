@@ -216,7 +216,7 @@ test("Escape, mouse completion, disabled autocomplete, disabled /? and ordinary 
   type(input, "/r 1d20"); assert.equal(key(input, "Enter").defaultPrevented, false);
 });
 
-test("Korean IME Enter cannot share, and the post-composition Enter guard blocks premature sending", async () => {
+test("Korean IME Enter waits for the committed character then shares once without another Enter", async () => {
   autocomplete = new AutocompleteController(store, chat); autocomplete.start();
   const input = chatInput(); type(input, "/? 출혈");
   input.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
@@ -227,11 +227,9 @@ test("Korean IME Enter cannot share, and the post-composition Enter guard blocks
   assert.equal(coreCalled, 0);
   assert.equal(messages.length, 0);
   input.dispatchEvent(new CompositionEvent("compositionend", {bubbles: true}));
-  key(input, "Enter"); await tick();
-  assert.equal(messages.length, 0);
-  autocomplete.compositionEnded.set(input, -Infinity);
-  key(input, "Enter"); await tick();
+  await new Promise(resolve => setTimeout(resolve, 90));
   assert.equal(messages.length, 1);
+  assert.equal(input.value, "");
   input.removeEventListener("keydown", coreHandler);
 });
 
