@@ -61,3 +61,4 @@ jobs:
           name: catalog-card-theme-qa
           path: dist/theme-qa
           retention-days: 7
+# English fixture avoids a font download on the runner.
