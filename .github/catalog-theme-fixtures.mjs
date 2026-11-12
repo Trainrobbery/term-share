@@ -6,7 +6,7 @@ const project = process.argv[2] || process.cwd();
 const output = process.argv[3] || join(project, "dist", "theme-qa");
 await mkdir(output, {recursive: true});
 const css = await readFile(join(project, "styles/term-share.css"), "utf8");
-const translations = JSON.parse(await readFile(join(project, "lang/ko.json"), "utf8")).TERM_SHARE;
+const translations = JSON.parse(await readFile(join(project, "lang/en.json"), "utf8")).TERM_SHARE;
 globalThis.DOMParser = new JSDOM().window.DOMParser;
 globalThis.game = {i18n: {format: (key, data) => translations[key.replace("TERM_SHARE.", "")].replace("{name}", data.name)}};
 const {cardHTML, renderTermMessage} = await import(pathToFileURL(join(project, "scripts/chat.js")).href);
@@ -28,9 +28,9 @@ function card(entry, id, legacy = false) {
   el.querySelector(".ts-card-body a")?.classList.add("content-link");
   return el.outerHTML;
 }
-const normal = card({name: "장서의 기록", description: '<p><strong>용어의 뜻</strong>과 관련 규칙을 차분하게 정리한 장서 카드입니다.</p><ul><li>중요한 내용은 <em>강조</em>해서 표시합니다.</li><li><a href="https://foundryvtt.com/">관련 문서 열기</a></li></ul>'}, "preview");
-const stress = card({name: "아주긴용어명과띄어쓰기없는장서목록을좁은채팅영역에서도읽을수있도록표시합니다", description: '<p><a href="https://foundryvtt.com/">https://example.invalid/' + "verylongdocumentreference".repeat(8) + '</a></p><p><img src="sample.svg" alt="본문 이미지"></p><pre>' + "긴본문".repeat(18) + '</pre>'}, "stress", true);
-const core = `body{margin:0;padding:24px;background:#e7e7e7;color:#222}body.theme-dark{background:#171a1f;color:#eee}.channel{width:420px;max-width:100%}.chat-message{box-sizing:border-box;padding:10px;border:1px solid #777;background:#eee;box-shadow:0 2px 4px #0003;margin:8px 0}.theme-dark .chat-message{background:#24282d;color:#eee}h2{border-bottom:2px solid #777;font-size:26px}a.content-link{display:inline-block;white-space:nowrap}p{margin:1em 0}ul{padding-left:22px}`;
+const normal = card({name: "Library record", description: '<p><strong>Term definition</strong> and related rules, collected for reference.</p><ul><li>Use <em>emphasis</em> for important details.</li><li><a href="https://foundryvtt.com/">Open related document</a></li></ul>'}, "preview");
+const stress = card({name: "AnUnbrokenCatalogueTitleThatStillFitsInsideTheNarrowestChatColumn", description: '<p><a href="https://foundryvtt.com/">https://example.invalid/' + "verylongdocumentreference".repeat(8) + '</a></p><p><img src="sample.svg" alt="본문 이미지"></p><pre>' + "Long text ".repeat(18) + '</pre>'}, "stress", true);
+const core = `li{list-style:none}body{margin:0;padding:24px;background:#e7e7e7;color:#222}body.theme-dark{background:#171a1f;color:#eee}.channel{width:420px;max-width:100%}.chat-message{box-sizing:border-box;padding:10px;border:1px solid #777;background:#eee;box-shadow:0 2px 4px #0003;margin:8px 0}.theme-dark .chat-message{background:#24282d;color:#eee}h2{border-bottom:2px solid #777;font-size:26px}a.content-link{display:inline-block;white-space:nowrap}p{margin:1em 0}ul{padding-left:22px}`;
 function checkStyles(css) {
   const assert = (value, message) => {if (!value) throw new Error(message);};
   const equal = (actual, expected, message) => assert(JSON.stringify(actual) === JSON.stringify(expected), message + ": " + JSON.stringify(actual));
@@ -74,7 +74,7 @@ function checkStyles(css) {
   document.documentElement.dataset.qa=metrics.ok?"passed":"failed";
 }
 for (const [name,theme,width] of [["light","theme-light",420],["dark","theme-dark",420],["narrow","theme-dark",220]]) {
-  const html=`<!doctype html><html lang="ko"><meta charset="utf-8"><style>${core}</style><body class="${theme}"><main class="channel" style="width:${width}px"><li class="chat-message" id="ordinary">일반 채팅 메시지</li>${normal}${stress}</main><script>window.addEventListener('load',()=>(${checkStyles.toString()})(${JSON.stringify(css)}));</script></body></html>`;
+  const html=`<!doctype html><html lang="ko"><meta charset="utf-8"><style>${core}</style><body class="${theme}"><main class="channel" style="width:${width}px"><li class="chat-message" id="ordinary">Ordinary chat message</li>${normal}${stress}</main><script>window.addEventListener('load',()=>(${checkStyles.toString()})(${JSON.stringify(css)}));</script></body></html>`;
   await writeFile(join(output,`${name}.html`),html);
 }
 await writeFile(join(output,"sample.svg"),'<svg xmlns="http://www.w3.org/2000/svg" width="960" height="120"><rect width="960" height="120" fill="#c8b99c"/></svg>');
