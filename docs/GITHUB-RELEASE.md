@@ -9,12 +9,12 @@
 | 항목 | 값 |
 |---|---|
 | 기본 브랜치 | `main` |
-| module.json의 version | `0.1.0-alpha.13` |
-| 릴리스 태그 | `v0.1.0-alpha.13` |
-| ZIP 첨부 파일명 | `Term-Share-0.1.0-alpha.13-V13.zip` |
+| module.json의 version | `0.1.0-alpha.14` |
+| 릴리스 태그 | `v0.1.0-alpha.14` |
+| ZIP 첨부 파일명 | `Term-Share-0.1.0-alpha.14-V13.zip` |
 | 별도 manifest 첨부 파일명 | `module.json` |
 | 설치·업데이트용 manifest | `https://raw.githubusercontent.com/Trainrobbery/term-share/main/module.json` |
-| ZIP 다운로드 | `https://github.com/Trainrobbery/term-share/releases/download/v0.1.0-alpha.13/Term-Share-0.1.0-alpha.13-V13.zip` |
+| ZIP 다운로드 | `https://github.com/Trainrobbery/term-share/releases/download/v0.1.0-alpha.14/Term-Share-0.1.0-alpha.14-V13.zip` |
 
 ## 1. 다운로드 주소 공개
 
@@ -31,8 +31,8 @@ Foundry의 기본 URL 설치·업데이트는 로그인 없이 받을 수 있는
 ## 3. 릴리스 게시
 
 1. 저장소의 **Releases → Draft a new release**를 엽니다.
-2. 태그를 **`v0.1.0-alpha.13`**, 대상 브랜치를 **`main`**으로 지정합니다.
-3. 첨부 파일에 **`Term-Share-0.1.0-alpha.13-V13.zip`**과 별도로 제공한 **`module.json`**을 추가합니다.
+2. 태그를 **`v0.1.0-alpha.14`**, 대상 브랜치를 **`main`**으로 지정합니다.
+3. 첨부 파일에 **`Term-Share-0.1.0-alpha.14-V13.zip`**과 별도로 제공한 **`module.json`**을 추가합니다.
 4. 알파 배포이므로 **This is a pre-release**를 선택할 수 있습니다. 이번 manifest는 main의 Raw 주소여서 GitHub의 latest 릴리스 선택에 의존하지 않습니다.
 5. **Publish release**를 누릅니다. 태그와 파일명을 바꾸려면 `module.json`의 download 주소도 함께 바꿔야 합니다.
 

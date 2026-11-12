@@ -63,13 +63,13 @@ body.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark {-
 .term-share-app .ts-import-summary {line-height: 1.6;}
 .term-share-app .ts-import-changes {max-height: 200px; overflow: auto; padding-left: 20px; line-height: 1.6; overflow-wrap: anywhere;}
 
-.term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 4px 0; gap: 0; min-height: 0;}
+.term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 2px 0; gap: 0; min-height: 0;}
 .term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0; min-width: 0; max-width: 100%; box-sizing: border-box;}
 .term-share-message .ts-card-chrome {display: none !important;}
 .term-share-message:not(.term-share-card)::before, .term-share-message:not(.term-share-card)::after {display: none;}
 .term-share-content {display: block; padding: 0; margin: 0;}
 /* Library catalogue card: explicit paper/ink colors in every Foundry theme. */
-.term-share-card {display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; height: auto; margin: 0; padding: 14px 16px; border: 1px solid #c8b99c; border-radius: 2px; color: #312d25; background: #f4efdf; box-shadow: none; text-shadow: none; text-align: left; white-space: normal; overflow: hidden; overflow-wrap: anywhere;}
+.term-share-card {display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; height: auto; margin: 0; padding: 10px 16px; border: 1px solid #c8b99c; border-radius: 2px; color: #312d25; background: #f4efdf; box-shadow: none; text-shadow: none; text-align: left; white-space: normal; overflow: hidden; overflow-wrap: anywhere;}
 .term-share-card .ts-share-notice {margin: 0 0 7px; padding: 0; color: #706452; opacity: 1; font-size: 11px; font-weight: normal; line-height: 1.4; overflow-wrap: anywhere;}
 .term-share-card .ts-card-title {margin: 0; padding: 0; border: 0; color: #312d25; font-size: 20px; font-weight: 600; line-height: 1.4; text-shadow: none; text-transform: none; white-space: normal; overflow-wrap: anywhere;}
 .term-share-card .ts-card-body {margin: 10px 0 0; padding: 10px 0 0; border: 0; border-top: 1px solid #c8b99c; color: #312d25; font-size: 14px; font-weight: normal; line-height: 1.6; min-width: 0; white-space: normal; overflow-wrap: anywhere; overflow-x: auto;}

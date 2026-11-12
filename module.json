@@ -2,7 +2,7 @@
   "id": "term-share",
   "title": "Term Share — 용어 사전 공유",
   "description": "채팅 명령어와 자동완성으로 공개 용어 사전을 공유합니다. GM 사전 관리, 리치 텍스트 및 JSON 백업을 지원하는 알파 버전입니다.",
-  "version": "0.1.0-alpha.13",
+  "version": "0.1.0-alpha.14",
   "authors": [
     {
       "name": "Term Share Contributors"
@@ -33,5 +33,5 @@
   "license": "LICENSE",
   "url": "https://github.com/Trainrobbery/term-share",
   "manifest": "https://raw.githubusercontent.com/Trainrobbery/term-share/main/module.json",
-  "download": "https://github.com/Trainrobbery/term-share/releases/download/v0.1.0-alpha.13/Term-Share-0.1.0-alpha.13-V13.zip"
+  "download": "https://github.com/Trainrobbery/term-share/releases/download/v0.1.0-alpha.14/Term-Share-0.1.0-alpha.14-V13.zip"
 }
