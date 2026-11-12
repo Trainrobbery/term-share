@@ -97,3 +97,53 @@ test("ProseMirror shares the final committed Korean state after a single composi
     assert.equal(view.state.doc.textContent, "");
   } finally { cleanup(); }
 });
+
+test("ProseMirror suggestions read the live composing DOM while the committed model is still behind", () => {
+  const inline = new Schema({nodes: {doc: {content: "text*"}, text: {group: "inline"}}});
+  for (const schema of [inline, blockSchema]) {
+    const {controller, view, cleanup} = fixture(schema);
+    try {
+      values.get("dictionary").entries.push(
+        {id: "poison", name: "중독", aliases: [], description: "<p>중독</p>"},
+        {id: "resist", name: "중독 저항", aliases: [], description: "<p>저항</p>"}
+      );
+      view.dispatch(view.state.tr.insertText("/? "));
+      view.dom.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
+      const committed = view.state;
+      const text = schema === inline ? view.dom.firstChild : view.dom.firstChild.firstChild;
+      text.data = "/? 중"; // Browser edit before ProseMirror flushes its observer.
+      controller.update();
+      assert.equal(controller.popup.hidden, false);
+      assert.deepEqual(controller.rows.map(row => row.entry.name), ["중독", "중독 저항"]);
+      assert.equal(view.state, committed, "preview must not dispatch a transaction");
+      assert.equal(view.state.doc.textContent, "/? ");
+      assert.equal(text.data, "/? 중");
+      text.data = "/? 중독 저";
+      controller.update();
+      assert.deepEqual(controller.rows.map(row => row.entry.name), ["중독 저항"]);
+      assert.equal(messages.length, 0);
+    } finally { cleanup(); }
+  }
+});
+
+test("ProseMirror Tab or mouse completion does not rewrite an active IME document", async () => {
+  for (const selection of ["Tab", "mouse"]) {
+    const {controller, view, cleanup} = fixture(blockSchema);
+    try {
+      view.dispatch(view.state.tr.insertText("/? 출"));
+      view.dom.dispatchEvent(new CompositionEvent("compositionstart", {bubbles: true}));
+      controller.update();
+      const composingState = view.state;
+      if (selection === "Tab") key(view.dom, "Tab");
+      else controller.popup.querySelector("[data-ts-suggestion]").dispatchEvent(new Event("pointerdown", {bubbles: true, cancelable: true}));
+      assert.equal(view.state, composingState);
+      assert.equal(view.dom.textContent, "/? 출");
+      view.dom.dispatchEvent(new CompositionEvent("compositionend", {bubbles: true}));
+      await new Promise(resolve => setTimeout(resolve, 90));
+      assert.equal(view.state.doc.textContent, "/? 출혈");
+      assert.equal(view.dom.textContent, "/? 출혈");
+      assert.equal(document.activeElement, view.dom);
+      assert.equal(messages.length, 0);
+    } finally { cleanup(); }
+  }
+});
