@@ -13,6 +13,10 @@ let manager;
 let lastConflicts = [];
 connectApps(store);
 
+function applyCardPalette(value) {
+  document.documentElement.dataset.termSharePalette = value === "catalog" ? "catalog" : "legacy";
+}
+
 function settings() {
   game.settings.register(MODULE_ID, "dictionary", {
     scope: "world", config: false, type: Object, default: emptyDictionary(),
@@ -25,6 +29,11 @@ function settings() {
   game.settings.register(MODULE_ID, "questionCommand", {
     name: "TERM_SHARE.QuestionSetting", hint: "TERM_SHARE.QuestionHint", scope: "world", config: true,
     type: Boolean, default: true, onChange: () => { chat.registerCommand(); autocomplete?.update(); checkConflicts(); }
+  });
+  game.settings.register(MODULE_ID, "cardPalette", {
+    name: "TERM_SHARE.CardPaletteSetting", hint: "TERM_SHARE.CardPaletteHint", scope: "user", config: true,
+    type: String, choices: {legacy: "TERM_SHARE.CardPaletteLegacy", catalog: "TERM_SHARE.CardPaletteCatalog"},
+    default: "legacy", onChange: applyCardPalette
   });
   game.settings.register(MODULE_ID, "autocomplete", {
     name: "TERM_SHARE.AutocompleteSetting", hint: "TERM_SHARE.AutocompleteHint", scope: "user", config: true,
@@ -91,6 +100,7 @@ Hooks.once("init", () => {
 
 Hooks.once("ready", () => {
   try {
+    applyCardPalette(game.settings.get(MODULE_ID, "cardPalette"));
     store.snapshot();
     autocomplete.start();
     checkConflicts();
@@ -98,4 +108,7 @@ Hooks.once("ready", () => {
   } catch (error) { report(error); }
 });
 
-Hooks.once("shutdown", () => { autocomplete?.destroy(); chat.destroy(); });
+Hooks.once("shutdown", () => {
+  autocomplete?.destroy(); chat.destroy();
+  document.documentElement.removeAttribute("data-term-share-palette");
+});

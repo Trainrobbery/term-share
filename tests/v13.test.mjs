@@ -26,6 +26,11 @@ test("V13 lifecycle keeps pattern registrations intact and supports hook command
   assert.equal(patterns.thirdPartyQuestion.lastIndex, 0, "conflict detection must not mutate third-party regex state");
   assert.equal(menus.get("manager").restricted, true);
   assert.equal(definitions.get("autocomplete").scope, "user");
+  assert.equal(definitions.get("cardPalette").default, "legacy");
+  assert.equal(document.documentElement.dataset.termSharePalette, "legacy");
+  await game.settings.set(MODULE_ID, "cardPalette", "catalog");
+  assert.equal(document.documentElement.dataset.termSharePalette, "catalog");
+  await game.settings.set(MODULE_ID, "cardPalette", "legacy");
   const api = game.modules.get(MODULE_ID).api;
   assert.equal(api.diagnostics().generation, 13);
   assert.equal(api.diagnostics().transport, "chatMessage hook");
