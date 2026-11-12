@@ -21,7 +21,7 @@ test("lifecycle registers GM menu, world data, user preferences and public API; 
   assert.equal(definitions.get("autocomplete").scope, "user");
   assert.equal(definitions.get("questionCommand").default, true);
   const api = game.modules.get(MODULE_ID).api;
-  assert.equal(api.version, "0.1.0-alpha.11");
+  assert.equal(api.version, "0.1.0-alpha.12");
   assert.equal(api.diagnostics().transport, "CHAT_COMMANDS");
   Hooks.fire("ready"); Hooks.fire("ready");
   assert.equal(document.querySelectorAll(".term-share-autocomplete").length, 1);

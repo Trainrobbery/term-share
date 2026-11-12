@@ -64,17 +64,16 @@ body.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark {-
 .term-share-app .ts-import-changes {max-height: 200px; overflow: auto; padding-left: 20px; line-height: 1.6; overflow-wrap: anywhere;}
 
 .term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 4px 0; gap: 0; min-height: 0;}
-.term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0;}
+.term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0; min-width: 0; max-width: 100%; box-sizing: border-box;}
 .term-share-message .ts-card-chrome {display: none !important;}
 .term-share-message:not(.term-share-card)::before, .term-share-message:not(.term-share-card)::after {display: none;}
 .term-share-content {display: block; padding: 0; margin: 0;}
-.term-share-card .ts-share-notice {font-size: 11px; font-weight: normal; line-height: 1.4; margin: 0; padding: 7px 12px 0; color: inherit; opacity: .75; overflow-wrap: anywhere;}
-.term-share-card {border: 1px solid var(--color-border-light-2, #918b80); border-left: 4px solid #65857b; border-radius: 6px; overflow: hidden; margin: 0; color: #252925; background: #f4f1e8;}
-.theme-dark .term-share-card, .term-share-card.theme-dark {color: #ecebe6; background: #24282d;}
-.term-share-message.theme-light .term-share-card, .term-share-card.theme-light {color: #252925; background: #f4f1e8;}
-.term-share-card .ts-card-title {font-size: 18px; line-height: 1.3; padding: 9px 12px; margin: 0; border: 0; color: inherit; overflow-wrap: anywhere;}
-.term-share-card .ts-share-notice + .ts-card-title {padding-top: 3px;}
-.term-share-card .ts-card-body {padding: 8px 12px; border-top: 1px solid var(--color-border-light-2, #918b80); line-height: 1.65; overflow-wrap: anywhere; overflow-x: auto;}
+/* Library catalogue card: explicit paper/ink colors in every Foundry theme. */
+.term-share-card {display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; height: auto; margin: 0; padding: 14px 16px; border: 1px solid #c8b99c; border-radius: 2px; color: #312d25; background: #f4efdf; box-shadow: none; text-shadow: none; font-family: "Noto Serif KR", "Nanum Myeongjo", Batang, "바탕", Georgia, serif; text-align: left; white-space: normal; overflow: hidden; overflow-wrap: anywhere;}
+.term-share-card .ts-share-notice {margin: 0 0 7px; padding: 0; color: #706452; opacity: 1; font-size: 11px; font-weight: normal; line-height: 1.4; overflow-wrap: anywhere;}
+.term-share-card .ts-card-title {margin: 0; padding: 0; border: 0; color: #312d25; font-family: inherit; font-size: 20px; font-weight: 600; line-height: 1.4; text-shadow: none; text-transform: none; white-space: normal; overflow-wrap: anywhere;}
+.term-share-card .ts-card-body {margin: 10px 0 0; padding: 10px 0 0; border: 0; border-top: 1px solid #c8b99c; color: #312d25; font-size: 14px; font-weight: normal; line-height: 1.6; min-width: 0; white-space: normal; overflow-wrap: anywhere; overflow-x: auto;}
+.term-share-card .ts-card-body a {max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: normal;}
 .term-share-card .ts-card-body > :first-child {margin-top: 0;}
 .term-share-card .ts-card-body > :last-child {margin-bottom: 0;}
 .term-share-card .ts-card-body img {max-width: 100%; height: auto; object-fit: contain;}
