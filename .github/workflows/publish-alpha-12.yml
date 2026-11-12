@@ -1,0 +1,89 @@
+name: Publish Term Share alpha.12
+
+on:
+  push:
+    branches: [release/0.1.0-alpha.12]
+    paths: [.github/workflows/publish-alpha-12.yml]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: publish-term-share-alpha-12
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/release/0.1.0-alpha.12'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+      RELEASE_TAG: v0.1.0-alpha.12
+    steps:
+      - name: Check out release sources
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Build and validate release files
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, subprocess, zipfile
+          root = Path.cwd()
+          manifest_path = root / 'module.json'
+          manifest = json.loads(manifest_path.read_text())
+          assert manifest['id'] == 'term-share'
+          assert manifest['version'] == '0.1.0-alpha.12'
+          assert manifest['compatibility'] == {'minimum': '13', 'maximum': '14'}
+          assert manifest['manifest'] == 'https://raw.githubusercontent.com/Trainrobbery/term-share/main/module.json'
+          filename = 'Term-Share-0.1.0-alpha.12-V13.zip'
+          assert manifest['download'] == 'https://github.com/Trainrobbery/term-share/releases/download/v0.1.0-alpha.12/' + filename
+          for name in manifest['esmodules'] + manifest['styles'] + [lang['path'] for lang in manifest['languages']]:
+              assert (root / name).is_file(), name
+          dist = root / 'dist'
+          dist.mkdir()
+          (dist / 'module.json').write_bytes(manifest_path.read_bytes())
+          paths = subprocess.check_output(['git', 'ls-files', '-z']).decode().split('\0')
+          with zipfile.ZipFile(dist / filename, 'w', zipfile.ZIP_DEFLATED, compresslevel=9) as archive:
+              for name in sorted(paths):
+                  if not name or name.startswith('.github/') or name == '.gitignore':
+                      continue
+                  path = root / name
+                  assert path.is_file() and not path.is_symlink(), name
+                  assert '..' not in Path(name).parts and 'node_modules' not in Path(name).parts
+                  archive.write(path, 'term-share/' + name)
+          with zipfile.ZipFile(dist / filename) as archive:
+              assert archive.testzip() is None
+              assert archive.read('term-share/module.json') == (dist / 'module.json').read_bytes()
+          print('Release ZIP and manifest validated.')
+          PY
+          cat > dist/release-notes.md <<'NOTES'
+          채팅 카드에 오래된 도서관의 장서 목록을 닮은 테마를 적용했습니다.
+          
+          - 따뜻한 미색 바탕과 먹색 글자, 1px 갈색 테두리·가로 구분선, 2px 모서리를 사용합니다. 그림자는 없습니다.
+          - 박스 안에 공유 안내 → 20px 제목 → 구분선 → 14px 설명 순으로 표시합니다.
+          - 밝은/어두운 테마에서 같은 색을 유지하고 긴 용어·링크·본문 이미지를 채팅 폭에 맞춥니다.
+          - 기존 메시지도 다시 렌더링하면 적용됩니다. 저장된 메시지·사전 데이터는 수정하지 않습니다.
+          - 입력·전송·한글 IME·Enter 공유·자동완성·사전 편집 코드는 유지했습니다. 추가 이미지·외부 글꼴 다운로드·런타임 의존성은 없습니다.
+          
+          설치·업데이트 Manifest URL:
+          https://raw.githubusercontent.com/Trainrobbery/term-share/main/module.json
+          
+          기존 자동 테스트 63개 통과. Chrome 독립 표본으로 밝은/어두운 배경과 220px 좁은 채팅 폭의 스타일·줄바꿈·DOM 보존을 확인했습니다.
+          Foundry V13–V14 호환 선언을 유지합니다. 실제 Foundry 본체·OS IME 검증과의 차이는 docs/TEST-REPORT.md를 참고하세요.
+          NOTES
+      - name: Create draft and upload both assets
+        run: |
+          gh release create "$RELEASE_TAG" --target "$GITHUB_SHA" --draft --prerelease --title "Term Share 0.1.0-alpha.12" --notes-file dist/release-notes.md
+          gh release upload "$RELEASE_TAG" dist/Term-Share-0.1.0-alpha.12-V13.zip dist/module.json
+      - name: Verify assets and publish
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          release = json.loads(subprocess.check_output(['gh', 'release', 'view', os.environ['RELEASE_TAG'], '--json', 'assets']))
+          assert {asset['name'] for asset in release['assets']} == {'Term-Share-0.1.0-alpha.12-V13.zip', 'module.json'}
+          PY
+          gh release edit "$RELEASE_TAG" --draft=false --prerelease
