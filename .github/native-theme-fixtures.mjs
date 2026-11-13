@@ -59,6 +59,7 @@ function check() {
         const dark = document.body.classList.contains("theme-dark");
         const expected = palette === "catalog" ? ["rgb(244, 239, 223)","rgb(49, 45, 37)"] : dark ? ["rgb(36, 40, 45)","rgb(236, 235, 230)"] : ["rgb(244, 241, 232)","rgb(37, 41, 37)"];
         equal(metrics[palette].card,expected,palette+" card colors");
+        equal(s(card.querySelector("a")).color,expected[1],palette+" link contrast");
         equal(colors[0],expected,palette+" app colors");
         equal(s(card).padding,"10px 16px",palette+" compact padding");
         equal(s(card).borderRadius,"2px",palette+" compact corners");

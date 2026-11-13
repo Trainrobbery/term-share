@@ -124,6 +124,9 @@
 :root[data-term-share-palette="catalog"] .term-share-card .ts-share-notice {color: #706452; opacity: 1;}
 :root[data-term-share-palette="catalog"] .term-share-card .ts-card-body {border-top-color: #c8b99c;}
 .term-share-card .ts-card-body a {max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: normal;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body a:not(.broken) {color: inherit; text-decoration: underline; text-shadow: none;}
+:root[data-term-share-palette="legacy"] .term-share-card .ts-card-body a.content-link:not(.broken) {background: rgba(100, 145, 125, .16);}
+:root[data-term-share-palette="catalog"] .term-share-card .ts-card-body a.content-link:not(.broken) {background: #e8dfcb; border-color: #c8b99c;}
 :root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body > :first-child {margin-top: 0;}
 :root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body > :last-child {margin-bottom: 0;}
 .term-share-card .ts-card-body img {max-width: 100%; height: auto; object-fit: contain;}

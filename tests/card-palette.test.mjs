@@ -8,7 +8,7 @@ await import("../scripts/main.js");
 const {DictionaryManager, TermEditor, DictionaryImporter} = await import("../scripts/apps.js");
 
 const style = document.createElement("style");
-style.textContent = await readFile(new URL("../styles/term-share.css", import.meta.url), "utf8");
+style.textContent = 'a {color:#ffffff;} a.broken {color:#ff0000;}' + await readFile(new URL("../styles/term-share.css", import.meta.url), "utf8");
 document.head.append(style);
 // Simulate a preference already saved by this user before loading the module.
 values.set("cardPalette", "catalog");
@@ -52,9 +52,11 @@ test("both palettes keep the same compact geometry and follow their light/dark c
     assert.equal(getComputedStyle(root).margin, "2px 0px");
     assert.equal(getComputedStyle(card).backgroundColor, "rgb(244, 241, 232)");
     assert.equal(getComputedStyle(card).color, "rgb(37, 41, 37)");
+    assert.equal(getComputedStyle(card.querySelector("a")).color, "inherit", "custom links inherit card text instead of global link colors");
     frame.className = "theme-dark";
     assert.equal(getComputedStyle(card).backgroundColor, "rgb(36, 40, 45)");
     assert.equal(getComputedStyle(card).color, "rgb(236, 235, 230)");
+    assert.equal(getComputedStyle(card.querySelector("a")).color, "inherit", "custom links inherit card text instead of global link colors");
     assert.equal(getComputedStyle(card.querySelector(".ts-share-notice")).opacity, "0.75");
     root.classList.add("theme-light");
     assert.equal(getComputedStyle(card).backgroundColor, "rgb(244, 241, 232)", "local light override matches alpha.11");
@@ -63,6 +65,11 @@ test("both palettes keep the same compact geometry and follow their light/dark c
       frame.className = theme;
       assert.equal(getComputedStyle(card).backgroundColor, "rgb(244, 239, 223)");
       assert.equal(getComputedStyle(card).color, "rgb(49, 45, 37)");
+      const link = card.querySelector("a");
+      assert.equal(getComputedStyle(link).color, "inherit", "Chrome resolves link inheritance in the browser fixture");
+      link.classList.add("broken");
+      assert.equal(getComputedStyle(link).color, "rgb(255, 0, 0)", "broken document links retain their core warning color");
+      link.classList.remove("broken");
       const notice = getComputedStyle(card.querySelector(".ts-share-notice"));
       assert.equal(notice.color, "rgb(112, 100, 82)");
       assert.equal(notice.opacity, "1");
