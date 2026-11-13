@@ -14,7 +14,7 @@ let lastConflicts = [];
 connectApps(store);
 
 function applyCardPalette(value) {
-  document.documentElement.dataset.termSharePalette = value === "catalog" ? "catalog" : "legacy";
+  document.documentElement.dataset.termSharePalette = ["legacy", "catalog"].includes(value) ? value : "native";
 }
 
 function settings() {
@@ -32,8 +32,8 @@ function settings() {
   });
   game.settings.register(MODULE_ID, "cardPalette", {
     name: "TERM_SHARE.CardPaletteSetting", hint: "TERM_SHARE.CardPaletteHint", scope: "user", config: true,
-    type: String, choices: {legacy: "TERM_SHARE.CardPaletteLegacy", catalog: "TERM_SHARE.CardPaletteCatalog"},
-    default: "legacy", onChange: applyCardPalette
+    type: String, choices: {native: "TERM_SHARE.CardPaletteNative", legacy: "TERM_SHARE.CardPaletteLegacy", catalog: "TERM_SHARE.CardPaletteCatalog"},
+    default: "native", onChange: applyCardPalette
   });
   game.settings.register(MODULE_ID, "autocomplete", {
     name: "TERM_SHARE.AutocompleteSetting", hint: "TERM_SHARE.AutocompleteHint", scope: "user", config: true,

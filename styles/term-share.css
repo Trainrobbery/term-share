@@ -1,13 +1,54 @@
 /* Foundry V13/V14 load module styles into the modules cascade layer. */
-.term-share-app {
-  --ts-accent: #537570;
-  --ts-border: var(--color-border-light-2, #99958c);
+/* Native UI uses Foundry's semantic theme variables; custom themes override
+   only variables on Term Share elements, including already-open windows. */
+:is(.term-share-app, .term-share-autocomplete) {
+  --ts-accent: var(--color-border-highlight, #ff6400);
+  --ts-border: var(--color-border, var(--color-border-light-2, #99958c));
   --ts-muted: var(--color-text-secondary, #65635e);
-  --ts-surface: var(--color-cool-5-25, rgba(100, 110, 115, .08));
-  --ts-input-bg: #faf8f2;
-  --ts-input-fg: #252925;
-  min-width: 440px;
+  --ts-fg: var(--color-text-primary, #252925);
+  --ts-bg: var(--background, #f4f1e8);
+  --ts-surface: var(--color-cool-5-25, rgba(0, 0, 0, .08));
+  --ts-input-bg: var(--input-background-color, var(--color-cool-5-10, rgba(0, 0, 0, .05)));
+  --ts-input-fg: var(--input-text-color, var(--color-text-primary, #252925));
+  --ts-radius: 3px;
 }
+:is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete) {
+  --ts-fg: var(--color-text-primary, #ecebe6);
+  --ts-bg: var(--background, #24282d);
+  --ts-muted: var(--color-text-secondary, #b5b3ac);
+  --ts-surface: var(--color-cool-5-25, rgba(255, 255, 255, .1));
+  --ts-input-bg: var(--input-background-color, rgba(255, 255, 255, .06));
+  --ts-input-fg: var(--input-text-color, var(--color-text-primary, #ecebe6));
+}
+:root[data-term-share-palette="legacy"] :is(.term-share-app, .term-share-autocomplete) {
+  --ts-accent: #65857b; --ts-bg: #f4f1e8; --ts-fg: #252925;
+  --ts-border: var(--color-border-light-2, #918b80); --ts-muted: #65635e;
+  --ts-surface: rgba(100, 145, 125, .22); --ts-input-bg: #faf8f2; --ts-input-fg: #252925;
+  --ts-radius: 2px;
+}
+:root[data-term-share-palette="legacy"] :is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete) {
+  --ts-bg: #24282d; --ts-fg: #ecebe6; --ts-muted: #b5b3ac;
+  --ts-input-bg: #24282d; --ts-input-fg: #ecebe6;
+}
+:root[data-term-share-palette="catalog"] :is(.term-share-app, .term-share-autocomplete) {
+  --ts-accent: #706452; --ts-border: #c8b99c; --ts-muted: #706452;
+  --ts-bg: #f4efdf; --ts-fg: #312d25; --ts-surface: #e8dfcb;
+  --ts-input-bg: #faf6eb; --ts-input-fg: #312d25; --ts-radius: 2px;
+}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-app,
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-app :is(.window-header, .window-content) {
+  color: var(--ts-fg); background: var(--ts-bg);
+}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-app {
+  --color-text-primary: var(--ts-fg); --color-text-secondary: var(--ts-muted);
+  --color-border-highlight: var(--ts-accent);
+  --input-background-color: var(--ts-input-bg); --input-text-color: var(--ts-input-fg);
+}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-app :is(button:not(.ts-danger):not(.ts-term-row), input:not([type="color"]):not([type="checkbox"]), textarea, select) {
+  color: var(--ts-input-fg); background-color: var(--ts-input-bg); border-color: var(--ts-border);
+}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-app .ts-danger {background-color: var(--ts-input-bg); border-color: var(--ts-border);}
+.term-share-app {min-width: 440px;}
 .term-share-app .window-content {padding: 0; overflow: auto;}
 .term-share-app [hidden], .term-share-autocomplete[hidden] {display: none !important;}
 .term-share-app button {width: auto; flex: 0 0 auto;}
@@ -22,10 +63,11 @@
 .term-share-app .ts-list-panel {border-right: 1px solid var(--ts-border); overflow: auto;}
 .term-share-app .ts-count {margin: 12px 14px; font-size: 12px; color: var(--ts-muted);}
 .term-share-app .ts-term-list {list-style: none; padding: 0; margin: 0;}
-.term-share-app .ts-term-row {width: 100%; padding: 12px 14px; border: 0; border-radius: 0; border-bottom: 1px solid var(--ts-border); background: transparent; display: block; text-align: left; line-height: 1.4; height: auto; white-space: normal;}
+.term-share-app .ts-term-row {width: 100%; padding: 12px 14px; border: 0; border-radius: 0; border-bottom: 1px solid var(--ts-border); color: var(--ts-fg); background: transparent; display: block; text-align: left; line-height: 1.4; height: auto; white-space: normal;}
 .term-share-app .ts-term-row strong, .term-share-app .ts-term-row small {display: block; overflow-wrap: anywhere;}
 .term-share-app .ts-term-row small {font-size: 11px; color: var(--ts-muted); margin-top: 4px;}
-.term-share-app .ts-term-row.is-selected {background: var(--ts-surface); box-shadow: inset 4px 0 var(--ts-accent);}
+.term-share-app .ts-term-row:hover, .term-share-app .ts-term-row.is-selected {background: var(--ts-surface); color: var(--ts-fg); box-shadow: none;}
+.term-share-app .ts-term-row:focus-visible {outline: 1px solid var(--ts-accent); outline-offset: -1px;}
 .term-share-app .ts-detail-panel {overflow: auto; padding: 20px;}
 .term-share-app .ts-detail-heading {display: flex; flex-wrap: wrap; justify-content: space-between; align-items: start; gap: 12px;}
 .term-share-app .ts-detail-heading h2 {margin: 0; border: 0; overflow-wrap: anywhere;}
@@ -53,7 +95,6 @@
 .term-share-app .ts-editor-surface > :first-child {margin-top: 0;}
 .term-share-app .ts-editor-surface img {max-width: 100%; height: auto;}
 .term-share-app.ts-editor .ts-field > input, .term-share-app.ts-editor .ts-field > textarea {color: var(--ts-input-fg); background-color: var(--ts-input-bg); caret-color: var(--ts-input-fg);}
-body.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark {--ts-input-bg: #24282d; --ts-input-fg: #ecebe6;}
 .term-share-app .ts-form-footer {display: flex; justify-content: flex-end; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid var(--ts-border);}
 .term-share-app .ts-primary {border-color: var(--ts-accent);}
 .term-share-app .ts-warning {padding: 10px; border: 1px solid #b98833; border-radius: 4px; line-height: 1.5; font-size: 12px;}
@@ -63,35 +104,40 @@ body.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark {-
 .term-share-app .ts-import-summary {line-height: 1.6;}
 .term-share-app .ts-import-changes {max-height: 200px; overflow: auto; padding-left: 20px; line-height: 1.6; overflow-wrap: anywhere;}
 
-.term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 2px 0; gap: 0; min-height: 0;}
-.term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0; min-width: 0; max-width: 100%; box-sizing: border-box;}
 .term-share-message .ts-card-chrome {display: none !important;}
-.term-share-message:not(.term-share-card)::before, .term-share-message:not(.term-share-card)::after {display: none;}
 .term-share-content {display: block; padding: 0; margin: 0;}
-/* Compact catalogue shape; alpha.11 colors are the default palette. */
-.term-share-card {display: block; box-sizing: border-box; width: 100%; max-width: 100%; min-width: 0; height: auto; margin: 0; padding: 10px 16px; border: 1px solid #918b80; border-color: var(--color-border-light-2, #918b80); border-radius: 2px; color: #252925; background: #f4f1e8; box-shadow: none; text-shadow: none; text-align: left; white-space: normal; overflow: hidden; overflow-wrap: anywhere;}
+/* Native mode leaves the actual .chat-message frame and rich-text lists to core. */
+.term-share-card {display: block; box-sizing: border-box; min-width: 0; max-width: 100%; overflow-wrap: anywhere;}
 .term-share-card .ts-share-notice {margin: 0 0 7px; padding: 0; color: inherit; opacity: .75; font-size: 11px; font-weight: normal; line-height: 1.4; overflow-wrap: anywhere;}
-.term-share-card .ts-card-title {margin: 0; padding: 0; border: 0; color: inherit; font-size: 20px; font-weight: 600; line-height: 1.4; text-shadow: none; text-transform: none; white-space: normal; overflow-wrap: anywhere;}
-.term-share-card .ts-card-body {margin: 10px 0 0; padding: 10px 0 0; border: 0; border-top: 1px solid #918b80; border-top-color: var(--color-border-light-2, #918b80); color: inherit; font-size: 14px; font-weight: normal; line-height: 1.6; min-width: 0; white-space: normal; overflow-wrap: anywhere; overflow-x: auto;}
-:root:not([data-term-share-palette="catalog"]) :is(.theme-dark .term-share-card, .term-share-card.theme-dark) {color: #ecebe6; background: #24282d;}
-:root:not([data-term-share-palette="catalog"]) :is(.term-share-message.theme-light .term-share-card, .term-share-card.theme-light) {color: #252925; background: #f4f1e8;}
+.term-share-card .ts-card-title {overflow-wrap: anywhere;}
+.term-share-card .ts-card-body {min-width: 0; overflow-wrap: anywhere; overflow-x: auto;}
+/* Existing compact themes retain their own frame, typography and spacing. */
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-message:not(.term-share-card) {padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; margin: 2px 0; gap: 0; min-height: 0;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-message .ts-card-container {padding: 0; margin: 0; border: 0; background: transparent; box-shadow: none; gap: 0; min-height: 0; min-width: 0; max-width: 100%; box-sizing: border-box;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-message:not(.term-share-card)::before, :root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-message:not(.term-share-card)::after {display: none;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card {width: 100%; height: auto; margin: 0; padding: 10px 16px; border: 1px solid #918b80; border-color: var(--color-border-light-2, #918b80); border-radius: 2px; color: #252925; background: #f4f1e8; box-shadow: none; text-shadow: none; text-align: left; white-space: normal; overflow: hidden;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-title {margin: 0; padding: 0; border: 0; color: inherit; font-size: 20px; font-weight: 600; line-height: 1.4; text-shadow: none; text-transform: none; white-space: normal;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body {margin: 10px 0 0; padding: 10px 0 0; border: 0; border-top: 1px solid #918b80; border-top-color: var(--color-border-light-2, #918b80); color: inherit; font-size: 14px; font-weight: normal; line-height: 1.6; white-space: normal;}
+:root[data-term-share-palette="legacy"] :is(.theme-dark .term-share-card, .term-share-card.theme-dark) {color: #ecebe6; background: #24282d;}
+:root[data-term-share-palette="legacy"] :is(.term-share-message.theme-light .term-share-card, .term-share-card.theme-light) {color: #252925; background: #f4f1e8;}
 :root[data-term-share-palette="catalog"] .term-share-card {color: #312d25; background: #f4efdf; border-color: #c8b99c;}
 :root[data-term-share-palette="catalog"] .term-share-card .ts-share-notice {color: #706452; opacity: 1;}
 :root[data-term-share-palette="catalog"] .term-share-card .ts-card-body {border-top-color: #c8b99c;}
 .term-share-card .ts-card-body a {max-width: 100%; white-space: normal; overflow-wrap: anywhere; word-break: normal;}
-.term-share-card .ts-card-body > :first-child {margin-top: 0;}
-.term-share-card .ts-card-body > :last-child {margin-bottom: 0;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body > :first-child {margin-top: 0;}
+:root:is([data-term-share-palette="legacy"], [data-term-share-palette="catalog"]) .term-share-card .ts-card-body > :last-child {margin-bottom: 0;}
 .term-share-card .ts-card-body img {max-width: 100%; height: auto; object-fit: contain;}
 .term-share-card .ts-card-body pre {white-space: pre-wrap;}
 .term-share-card .ts-card-body table {max-width: 100%;}
 
-.term-share-autocomplete {position: fixed; z-index: 10000; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; background: var(--background, #f4f1e8); color: var(--color-text-primary, #242923); border: 1px solid var(--color-border-light-2, #918b80); border-radius: 6px; box-shadow: 0 4px 18px #0004; padding: 3px;}
-.term-share-autocomplete .ts-suggestion {position: relative; padding: 8px 10px; min-height: 48px; box-sizing: border-box; cursor: pointer; border-radius: 3px; line-height: 1.4; overflow-wrap: anywhere;}
-.term-share-autocomplete .ts-suggestion[aria-selected="true"] {padding-right: 48px; background: rgba(100, 145, 125, .22); outline: 1px solid #65857b; outline-offset: -1px;}
+.term-share-autocomplete {position: fixed; z-index: 10000; box-sizing: border-box; overflow: auto; overscroll-behavior: contain; background: var(--ts-bg); color: var(--ts-fg); border: 1px solid var(--ts-border); border-radius: var(--ts-radius); box-shadow: 0 2px 8px #0004; padding: 0;}
+.term-share-autocomplete .ts-suggestion {position: relative; padding: 6px 10px; min-height: 0; box-sizing: border-box; cursor: pointer; border: 0; border-radius: 0; line-height: 1.4; overflow-wrap: anywhere;}
+.term-share-autocomplete .ts-suggestion:hover, .term-share-autocomplete .ts-suggestion[aria-selected="true"] {background: var(--ts-surface); color: var(--ts-fg);}
+.term-share-autocomplete .ts-suggestion[aria-selected="true"] {padding-right: 48px;}
 .term-share-autocomplete .ts-suggestion[aria-selected="true"]::after {content: "TAP"; position: absolute; right: 10px; top: 50%; transform: translateY(-50%); font-size: 11px; font-weight: normal; line-height: 1; letter-spacing: .04em; opacity: .35; pointer-events: none;}
 .term-share-autocomplete .ts-suggestion small {display: block; font-size: 11px; opacity: .7; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-top: 3px;}
 .term-share-autocomplete .ts-matched-alias {font-size: 11px; opacity: .75;}
-body.theme-dark .term-share-autocomplete, .theme-dark .term-share-autocomplete {background: #24282d; color: #ecebe6;}
+:root[data-term-share-palette="catalog"] .term-share-autocomplete {box-shadow: none;}
 @media (max-width: 620px) {
   .term-share-app .ts-split {grid-template-columns: minmax(150px, 40%) minmax(180px, 1fr);}
   .term-share-app .ts-detail-panel {padding: 12px;}
