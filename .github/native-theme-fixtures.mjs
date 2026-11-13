@@ -72,6 +72,6 @@ function check() {
   const pre=document.createElement("pre");pre.id="qa-metrics";pre.hidden=true;pre.textContent=JSON.stringify(metrics);document.body.append(pre);
   document.documentElement.dataset.termSharePalette=["native","legacy","catalog"].includes(location.hash.slice(1))?location.hash.slice(1):"native";
 }
-for (const theme of ["light","dark"]) await writeFile(join(output,theme+".html"),`<!doctype html><html lang="en"><meta charset="utf-8"><style>${core}</style><style>${css}</style><body class="theme-${theme}">${markup}<script>window.addEventListener('load',${check.toString()});</script></body></html>`);
+for (const theme of ["light","dark"]) await writeFile(join(output,theme+".html"),`<!doctype html><html lang="en"><meta charset="utf-8"><style>${core}</style><style>${css}</style><body class="theme-${theme}">${markup.replace('term-share-autocomplete themed', 'term-share-autocomplete themed theme-' + theme)}<script>window.addEventListener('load',${check.toString()});</script></body></html>`);
 Hooks.fire("shutdown");
 console.log("Generated native/legacy/catalog UI fixtures in two core theme contexts.");

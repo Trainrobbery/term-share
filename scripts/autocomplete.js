@@ -87,7 +87,7 @@ export class AutocompleteController {
     const signal = this.abort.signal;
     const doc = document;
     this.popup = doc.createElement("div");
-    this.popup.className = "term-share-autocomplete";
+    this.popup.className = "term-share-autocomplete themed";
     this.popup.id = "term-share-autocomplete";
     this.popup.hidden = true;
     this.popup.setAttribute("role", "listbox");
@@ -340,6 +340,10 @@ export class AutocompleteController {
   }
   position() {
     if (this.popup.hidden || !this.input?.isConnected) return;
+    // The popup lives under body, outside the chat's theme context. Opt into
+    // core's standard themed variables and follow the actual input's theme.
+    const theme = this.input.closest(".theme-light, .theme-dark");
+    for (const name of ["theme-light", "theme-dark"]) this.popup.classList.toggle(name, Boolean(theme?.classList.contains(name)));
     const rect = this.input.getBoundingClientRect();
     if (!rect.width || !this.input.getClientRects().length) return this.close();
     this.popup.style.width = `${Math.min(rect.width, window.innerWidth - 16)}px`;

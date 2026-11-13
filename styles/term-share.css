@@ -12,7 +12,7 @@
   --ts-input-fg: var(--input-text-color, var(--color-text-primary, #252925));
   --ts-radius: 3px;
 }
-:is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete) {
+:is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete:not(.theme-light), .term-share-autocomplete.theme-dark) {
   --ts-fg: var(--color-text-primary, #ecebe6);
   --ts-bg: var(--background, #24282d);
   --ts-muted: var(--color-text-secondary, #b5b3ac);
@@ -26,7 +26,7 @@
   --ts-surface: rgba(100, 145, 125, .22); --ts-input-bg: #faf8f2; --ts-input-fg: #252925;
   --ts-radius: 2px;
 }
-:root[data-term-share-palette="legacy"] :is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete) {
+:root[data-term-share-palette="legacy"] :is(.theme-dark .term-share-app:not(.theme-light), .term-share-app.theme-dark, .theme-dark .term-share-autocomplete:not(.theme-light), .term-share-autocomplete.theme-dark) {
   --ts-bg: #24282d; --ts-fg: #ecebe6; --ts-muted: #b5b3ac;
   --ts-input-bg: #24282d; --ts-input-fg: #ecebe6;
 }

@@ -62,3 +62,4 @@ jobs:
           path: dist/theme-qa
           retention-days: 7
 # Includes custom-theme link contrast review.
+# Reviews popup core theme class propagation.
